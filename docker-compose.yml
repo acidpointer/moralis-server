@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+
+  # # Port: 6379
+  # redis:
+  #   image: redis:7.0.4-alpine
+  #   container_name: redis
+  #   restart: always
+  #   networks:
+  #     - "app"
+
+  # Port: 5432
+  mongo:
+    image: mongo:6.0.4
+    container_name: mongo
+    restart: always
+    env_file:
+      - "./.env"
+    environment:
+      - "MONGO_INITDB_DATABASE=${MONGO_DB}"
+      - "MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}"
+      - "MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASSWORD}"
+      - "MONGO_USER=${MONGO_USER}"
+      - "MONGO_PASSWORD=${MONGO_PASS}"
+      - "MONGO_DB=${MONGO_DB}"
+    volumes:
+       - "./.mongodb:/data/db"
+    networks:
+      - "app"
+  
+  mongo-express:
+    image: docker.io/mongo-express:latest
+    container_name: mongo-express
+    restart: always
+    env_file:
+      - ".env"
+    depends_on:
+      - mongo
+    environment:
+      - "ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}"
+      - "ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_PASSWORD}"
+      - "ME_CONFIG_MONGODB_URL=mongodb://${MONGO_ADMIN_USER}:${MONGO_ADMIN_PASSWORD}@mongo:27017/"
+      - "ME_CONFIG_SITE_BASEURL=/me/"
+      - "ME_CONFIG_BASICAUTH_USERNAME=${ME_USER}"
+      - "ME_CONFIG_BASICAUTH_PASSWORD=${ME_PASS}"
+    ports:
+      - 9090:8081
+    networks:
+      - "app"
+
+  moralis:
+    container_name: moralis
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - 8080:8080
+    networks:
+      - "app"
+
+      
+
+networks:
+  app:
