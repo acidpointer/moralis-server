@@ -46,7 +46,7 @@ const boostrap = async (): Promise<FastifyInstance> => {
   });
 
   fastify.use('/dashboard', parseDashboard);
-  fastify.use(`/server`, parseServer.app);
+  fastify.use('/parse', parseServer.app);
 
   return fastify;
 }

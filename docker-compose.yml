@@ -1,3 +1,5 @@
+# Use: docker compose --env-file ./backend/.env up -d --build
+
 version: '3'
 
 services:
@@ -10,13 +12,25 @@ services:
   #   networks:
   #     - "app"
 
+  caddy:
+    image: caddy:2.6.3-alpine
+    container_name: caddy
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./.caddy:/data
+    networks:
+      - "app"
+
   # Port: 5432
   mongo:
     image: mongo:6.0.4
     container_name: mongo
     restart: always
     env_file:
-      - "./.env"
+      - "./backend/.env"
     environment:
       - "MONGO_INITDB_DATABASE=${MONGO_DB}"
       - "MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}"
@@ -29,14 +43,16 @@ services:
     networks:
       - "app"
   
+  # Port: 8081
   mongo-express:
     image: docker.io/mongo-express:latest
     container_name: mongo-express
     restart: always
     env_file:
-      - ".env"
+      - "./backend/.env"
     depends_on:
       - mongo
+      - caddy
     environment:
       - "ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ADMIN_USER}"
       - "ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ADMIN_PASSWORD}"
@@ -44,25 +60,21 @@ services:
       - "ME_CONFIG_SITE_BASEURL=/me/"
       - "ME_CONFIG_BASICAUTH_USERNAME=${ME_USER}"
       - "ME_CONFIG_BASICAUTH_PASSWORD=${ME_PASS}"
-    ports:
-      - 9090:8081
     networks:
       - "app"
 
   moralis:
     container_name: moralis
     build:
-      context: .
+      context: ./backend
       dockerfile: ./Dockerfile
     restart: always
     depends_on:
       - mongo
-    ports:
-      - 8080:8080
+      - caddy
     networks:
       - "app"
 
-      
 
 networks:
   app:

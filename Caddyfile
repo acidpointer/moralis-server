@@ -1,0 +1,39 @@
+localhost:8080 {
+    encode zstd gzip
+    # header {
+    #     # enable HSTS
+    #     Strict-Transport-Security max-age=31536000;
+    #     # disable clients from sniffing the media type
+    #     X-Content-Type-Options nosniff
+    #     # clickjacking protection
+    #     X-Frame-Options DENY
+    #     # keep referrer data off of HTTP connections
+    #     Referrer-Policy no-referrer-when-downgrade
+    #     # Content-Security-Policy: default-src 'self'
+    # }
+
+    route /me/* {
+        #uri strip_prefix /rabbit
+        reverse_proxy mongo-express:8081
+    }
+
+    route /* {
+        reverse_proxy frontend:3000
+    }
+
+    route /parse/* {
+        reverse_proxy moralis:8080 
+        # {
+        #     header_up Host                {host}
+        #     header_up Origin              {host}
+        #     header_up X-Real-IP           {remote}
+        #     header_up X-Forwarded-Host    {host}
+        #     header_up X-Forwarded-Server  {host}
+        #     header_up X-Forwarded-Port    {port}
+        #     header_up X-Forwarded-For     {remote}
+        #     header_up X-Forwarded-Proto   {scheme}
+        #     header_down Access-Control-Allow-Origin       https://alphaping.herokuapp.com
+        #     header_down Access-Control-Allow-Credentials  true
+        # }
+    }
+}
