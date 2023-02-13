@@ -1,0 +1,30 @@
+{
+  "name": "aave_test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "graph-build": "graphclient build",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "start": "yarn build && yarn preview"
+  },
+  "devDependencies": {
+    "ethers": "^5.7.2",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "@vitejs/plugin-react": "^3.1.0",
+    "axios": "^1.3.2",
+    "moralis": "^2.14.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.0",
+    "vite": "^4.1.1",
+    "web3": "^1.8.2"
+  }
+}

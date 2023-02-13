@@ -12,6 +12,8 @@ import { streamsSync } from '@moralisweb3/parse-server';
 import { parseServer } from './parseServer';
 import { parseDashboard } from './dashboard';
 import config from './config';
+import { apiRouter } from './api/apiRouter';
+import { errorHandler } from './middlewares/errorHandler';
 
 
 
@@ -47,6 +49,10 @@ const boostrap = async (): Promise<FastifyInstance> => {
 
   fastify.use('/dashboard', parseDashboard);
   fastify.use('/parse', parseServer.app);
+  fastify.use('/api', apiRouter);
+  fastify.use(errorHandler);
+
+
 
   return fastify;
 }

@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "baseUrl": ".",
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "experimentalDecorators": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "noImplicitThis": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": false,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "target": "esnext",
+        "moduleResolution": "node",
+        "module": "ESNext",
+        "sourceMap": true,
+        "lib": [
+            "esnext",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "allowSyntheticDefaultImports": true
+    },
+    "include": [
+        "src"
+    ]
+}

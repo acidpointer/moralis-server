@@ -1,4 +1,4 @@
-localhost:8080 {
+http://127.0.0.1:8080 {
     encode zstd gzip
     # header {
     #     # enable HSTS
@@ -18,11 +18,11 @@ localhost:8080 {
     }
 
     route /* {
-        reverse_proxy frontend:3000
+        reverse_proxy moralis:3000
     }
 
-    route /parse/* {
-        reverse_proxy moralis:8080 
+    #route /parse/* {
+        #reverse_proxy moralis:8080 
         # {
         #     header_up Host                {host}
         #     header_up Origin              {host}
@@ -35,5 +35,5 @@ localhost:8080 {
         #     header_down Access-Control-Allow-Origin       https://alphaping.herokuapp.com
         #     header_down Access-Control-Allow-Credentials  true
         # }
-    }
+    #}
 }

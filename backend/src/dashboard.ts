@@ -8,7 +8,7 @@ export const parseDashboard = new ParseDashboard(
       {
         appId: config.APPLICATION_ID,
         masterKey: config.MASTER_KEY,
-        serverURL: `http://localhost:8080/server`,
+        serverURL: `http://localhost:8080/parse`,
         appName: 'SELFHOSTED MORALIS',
       },
     ],
